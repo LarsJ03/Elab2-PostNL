@@ -21,7 +21,7 @@ public class MapPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setStroke(new BasicStroke(2));
+        g2d.setStroke(new BasicStroke(1.5f));
         double scaleFactor = calculateScaleFactor(roads);
         int panelHeight = getHeight();
 

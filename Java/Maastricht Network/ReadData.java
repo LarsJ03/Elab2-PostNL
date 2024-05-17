@@ -15,6 +15,7 @@ public class ReadData {
                 }
                 String[] data = line.split(";");
                 if (data.length == 15) {
+                    double dist = Double.parseDouble(data[3]);
                     double x1 = Double.parseDouble(data[8]);
                     double y1 = Double.parseDouble(data[9]);
                     double x2 = Double.parseDouble(data[10]);
@@ -22,7 +23,7 @@ public class ReadData {
                     String type = data[5];  // Assuming type is stored in the 6th column
                     int maxSpeed = Integer.parseInt(data[7]);  // Assuming maxSpeed is stored in the 8th column
 
-                    Road road = new Road(x1, y1, x2, y2, type, maxSpeed);
+                    Road road = new Road(dist, x1, y1, x2, y2, type, maxSpeed);
                     roads.add(road);
                 }
             }
@@ -36,13 +37,8 @@ public class ReadData {
         List<Intersection> intersections = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;
-            boolean firstLine = true;
 
             while ((line = reader.readLine()) != null) {
-                if (firstLine) {
-                    firstLine = false;
-                    continue;
-                }
                 String[] data = line.split(";");
                 if (data.length == 4) {
                     Intersection intersection = new Intersection(data[0], Double.parseDouble(data[1]), Double.parseDouble(data[2]), data[3]);
@@ -60,13 +56,8 @@ public class ReadData {
         List<ServiceLocation> locations = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;
-            boolean firstLine = true; // to skip header
     
             while ((line = reader.readLine()) != null) {
-                if (firstLine) {
-                    firstLine = false; // Skip the header row
-                    continue;
-                }
                 String[] data = line.split(";");
                 if (data.length == 7) {
                     ServiceLocation location = new ServiceLocation(
