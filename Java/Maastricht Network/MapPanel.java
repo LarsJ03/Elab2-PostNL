@@ -6,13 +6,43 @@ import java.util.Map;
 
 public class MapPanel extends JPanel {
     private List<Road> roads;
+    private List<ServiceLocation> serviceLocations;
     private Map<String, Color> typeColorMap;
 
-    public MapPanel(List<Road> roads) {
+    public MapPanel(List<Road> roads, List<ServiceLocation> serviceLocations) {
         this.roads = roads;
+        this.serviceLocations = serviceLocations;
         setPreferredSize(new Dimension(800, 600));
         setBackground(Color.WHITE);
         initializeColorMap();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setStroke(new BasicStroke(2));
+        double scaleFactor = calculateScaleFactor(roads);
+        int panelHeight = getHeight();
+
+        // Draw roads
+        for (Road road : roads) {
+            Color color = typeColorMap.getOrDefault(road.getType(), Color.BLACK);
+            g2d.setColor(color);
+            int x1 = (int) (road.getX1() * scaleFactor);
+            int y1 = panelHeight - (int) (road.getY1() * scaleFactor);
+            int x2 = (int) (road.getX2() * scaleFactor);
+            int y2 = panelHeight - (int) (road.getY2() * scaleFactor);
+            g2d.drawLine(x1, y1, x2, y2);
+        }
+
+        // Draw service locations
+        g2d.setColor(Color.CYAN); // Use a distinct color for service points
+        for (ServiceLocation location : serviceLocations) {
+            int x = (int) (location.getX() * scaleFactor);
+            int y = panelHeight - (int) (location.getY() * scaleFactor);
+            g2d.fillOval(x - 5, y - 5, 10, 10); // Draw a small circle for each location
+        }
     }
 
     private void initializeColorMap() {
@@ -32,31 +62,6 @@ public class MapPanel extends JPanel {
         typeColorMap.put("unclassified", Color.BLACK);
     }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setStroke(new BasicStroke(2));
-
-        if (roads.isEmpty()) {
-            System.out.println("No roads to display.");
-            return;
-        }
-
-        // Optional: Calculate scale factor based on expected min/max values
-        double scaleFactor = calculateScaleFactor(roads);
-        int panelHeight = getHeight(); // Get the height of the panel for flipping y-coordinates
-
-        for (Road road : roads) {
-            Color color = typeColorMap.getOrDefault(road.getType(), Color.BLACK); // Default to black if type unknown
-            g2d.setColor(color);
-            int x1 = (int) (road.getX1() * scaleFactor);
-            int y1 = panelHeight - (int) (road.getY1() * scaleFactor); // Flip y-coordinate
-            int x2 = (int) (road.getX2() * scaleFactor);
-            int y2 = panelHeight - (int) (road.getY2() * scaleFactor); // Flip y-coordinate
-            g2d.drawLine(x1, y1, x2, y2);
-        }
-    }
 
     private double calculateScaleFactor(List<Road> roads) {
         double maxX = Double.MIN_VALUE;

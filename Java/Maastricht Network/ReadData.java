@@ -55,4 +55,36 @@ public class ReadData {
         System.out.println("Loaded Intersections: " + intersections.size());  // Optional: Print the number of loaded intersections
         return intersections;  // Continuing to return the map for use with roads
     }
+
+    public static List<ServiceLocation> readServiceLocationsFromFile(String filename) {
+        List<ServiceLocation> locations = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line;
+            boolean firstLine = true; // to skip header
+    
+            while ((line = reader.readLine()) != null) {
+                if (firstLine) {
+                    firstLine = false; // Skip the header row
+                    continue;
+                }
+                String[] data = line.split(";");
+                if (data.length == 7) {
+                    ServiceLocation location = new ServiceLocation(
+                        data[0], // Location ID
+                        Double.parseDouble(data[1]), // X
+                        Double.parseDouble(data[2]), // Y
+                        data[3], // Square
+                        Integer.parseInt(data[4]), // Population
+                        Integer.parseInt(data[5]), // Total Deliveries
+                        Integer.parseInt(data[6]  // Total Pickups
+                    ));
+                    locations.add(location);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return locations;
+    }
+    
 }
