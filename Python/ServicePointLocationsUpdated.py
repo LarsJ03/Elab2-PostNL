@@ -7,7 +7,7 @@ def calculate_distance(x1, y1, x2, y2):
 def find_closest_nodes():
     # Load the datasets with no headers
     nodes = pd.read_csv('Data/Raw/nodes.csv', delimiter=';', header=None)
-    service_points = pd.read_csv('Data/Raw/Service Point Locations.csv', delimiter=';', header=None)
+    service_points = pd.read_csv('Data/Raw/ServicePointLocations.csv', delimiter=';', header=None)
 
     # Optionally, set column names for easier manipulation (comment out if unnecessary)
     nodes.columns = ['NODE ID', 'X', 'Y', 'SQUARE']
@@ -35,7 +35,7 @@ def find_closest_nodes():
     service_points[7] = closest_nodes  # Use integer index to add the new column
 
     # Save the updated dataframe to a new CSV file without headers
-    service_points.to_csv('Data/OwnDataset/Service Point Locations Updated.csv', index=False, sep=';', header=False)
+    service_points.to_csv('Data/OwnDataset/ServicePointLocationsUpdated.csv', index=False, sep=';', header=False)
 
 # Run the function
 find_closest_nodes()

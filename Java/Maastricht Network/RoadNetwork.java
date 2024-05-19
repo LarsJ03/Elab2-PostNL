@@ -1,46 +1,45 @@
 import java.io.*;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
 
 public class RoadNetwork {
     private static final double INF = Double.MAX_VALUE;
     private double[][] dist;
-    private Map<Integer, Integer> nodeIdToIndex;
-    private Map<Integer, Intersection> indexToNode;
+    private Map<Integer, Integer> nodeIdToIndex; // This becomes unnecessary if we use node IDs directly as indices
+    private Map<Integer, Intersection> indexToNode; // Also may be unnecessary
 
     public RoadNetwork(List<Intersection> intersections, List<Road> roads) {
-        int n = intersections.size();
-        dist = new double[n][n];
-        nodeIdToIndex = new HashMap<>();
-        indexToNode = new HashMap<>();
+        // Determine the maximum node ID for matrix dimension
+        int maxNodeId = 0;
+        for (Intersection intersection : intersections) {
+            if (intersection.getNodeId() > maxNodeId) {
+                maxNodeId = intersection.getNodeId();
+            }
+        }
 
-        for (int i = 0; i < n; i++) {
-            Intersection intersection = intersections.get(i);
-            nodeIdToIndex.put(intersection.getNodeId(), i);
-            indexToNode.put(i, intersection);
+        // Initialize the distance matrix
+        dist = new double[maxNodeId + 1][maxNodeId + 1]; // Adjusting index to fit node IDs
+
+        for (int i = 0; i <= maxNodeId; i++) {
             Arrays.fill(dist[i], INF);
-            dist[i][i] = 0; 
+            dist[i][i] = 0; // Distance to self is zero
         }
 
+        // Assign distances based on roads using direct node IDs as indices
         for (Road road : roads) {
-            int fromIndex = nodeIdToIndex.get(road.getV1());
-            int toIndex = nodeIdToIndex.get(road.getV2());
-            dist[fromIndex][toIndex] = road.getDist();
-            dist[toIndex][fromIndex] = road.getDist(); // Assuming undirected road for bidirectional travel
+            dist[road.getV1()][road.getV2()] = road.getDist();
+            dist[road.getV2()][road.getV1()] = road.getDist(); // For undirected roads
         }
 
-        floydWarshall();
+        floydWarshall(maxNodeId);
+
         writeDistancesToFile("Data/OwnDataset/Distances.csv");
     }
 
-    private void floydWarshall() {
-        int n = dist.length;
-        for (int k = 0; k < n; k++) {
-            System.out.println("Iteration " + (k + 1) + " of " + n + ": Processing node " + k);
-            for (int i = 0; i < n; i++) {
-                for (int j = 0; j < n; j++) {
+    private void floydWarshall(int maxNodeId) {
+        for (int k = 0; k <= maxNodeId; k++) {
+            System.out.println("Processing node " + (k + 1) + " of " + (maxNodeId + 1));
+            for (int i = 0; i <= maxNodeId; i++) {
+                for (int j = 0; j <= maxNodeId; j++) {
                     if (dist[i][k] < INF && dist[k][j] < INF && dist[i][j] > dist[i][k] + dist[k][j]) {
                         dist[i][j] = dist[i][k] + dist[k][j];
                     }
@@ -51,16 +50,14 @@ public class RoadNetwork {
 
     private void writeDistancesToFile(String filePath) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-            for (double[] row : dist) {
-                for (int i = 0; i < row.length; i++) {
-                    double value = row[i];
-                    writer.write(value < INF ? String.format("%.2f", value) : "INF");
-                    // Write a semicolon after each value except the last one
-                    if (i < row.length - 1) {
+            for (int i = 0; i < dist.length; i++) {
+                for (int j = 0; j < dist[i].length; j++) {
+                    writer.write(dist[i][j] < INF ? String.format("%.2f", dist[i][j]) : "INF");
+                    if (j < dist[i].length - 1) {
                         writer.write(";");
                     }
                 }
-                writer.newLine();  // Move to the next line after each row is written
+                writer.newLine();
             }
         } catch (IOException e) {
             System.err.println("Error writing to file: " + e.getMessage());
@@ -68,12 +65,9 @@ public class RoadNetwork {
     }
 
     public String getShortestPath(int startNodeId, int endNodeId) {
-        int startIndex = nodeIdToIndex.get(startNodeId);
-        int endIndex = nodeIdToIndex.get(endNodeId);
-        if (dist[startIndex][endIndex] == INF) {
+        if (startNodeId >= dist.length || endNodeId >= dist.length || dist[startNodeId][endNodeId] == INF) {
             return "No path exists";
         }
-        return "Shortest path from " + startNodeId + " to " + endNodeId + " is " + dist[startIndex][endIndex] + " units";
+        return "Shortest path from " + startNodeId + " to " + endNodeId + " is " + dist[startNodeId][endNodeId] + " units";
     }
 }
-

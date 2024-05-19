@@ -76,14 +76,15 @@ public class ReadData {
                 String[] data = line.split(";");
                 if (data.length == 7) {
                     ServiceLocation location = new ServiceLocation(
-                        data[0], // Location ID
+                        Integer.parseInt(data[0]), // Location ID, converted from String to int
                         Double.parseDouble(data[1]), // X
                         Double.parseDouble(data[2]), // Y
                         data[3], // Square
                         Integer.parseInt(data[4]), // Population
                         Integer.parseInt(data[5]), // Total Deliveries
-                        Integer.parseInt(data[6]  // Total Pickups
-                    ));
+                        Integer.parseInt(data[6]), // Total Pickups
+                        -1, // Closest Facility ID, hardcoded as -1 if not available
+                        Integer.parseInt(data[7])); // Closest Node ID, hardcoded as -1 if not available (adjust if data[7] is intended to be used)
                     locations.add(location);
                 }
             }
