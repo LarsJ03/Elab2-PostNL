@@ -15,15 +15,17 @@ public class ReadData {
                 }
                 String[] data = line.split(";");
                 if (data.length == 15) {
-                    double dist = Double.parseDouble(data[3]);
-                    double x1 = Double.parseDouble(data[8]);
-                    double y1 = Double.parseDouble(data[9]);
-                    double x2 = Double.parseDouble(data[10]);
-                    double y2 = Double.parseDouble(data[11]);
-                    String type = data[5];  // Assuming type is stored in the 6th column
-                    int maxSpeed = Integer.parseInt(data[7]);  // Assuming maxSpeed is stored in the 8th column
+                    int V1 = Integer.parseInt(data[1]);
+                    int V2 = Integer.parseInt(data[2]);
+                    double dist = Double.parseDouble(data[3].replace(",", "."));
+                    double x1 = Double.parseDouble(data[8].replace(",", "."));
+                    double y1 = Double.parseDouble(data[9].replace(",", "."));
+                    double x2 = Double.parseDouble(data[10].replace(",", "."));
+                    double y2 = Double.parseDouble(data[11].replace(",", "."));
+                    String type = data[5];
+                    int maxSpeed = Integer.parseInt(data[7]);
 
-                    Road road = new Road(dist, x1, y1, x2, y2, type, maxSpeed);
+                    Road road = new Road(V1, V2, dist, x1, y1, x2, y2, type, maxSpeed);
                     roads.add(road);
                 }
             }
@@ -39,9 +41,15 @@ public class ReadData {
             String line;
 
             while ((line = reader.readLine()) != null) {
+                line = removeUtf8Bom(line); // Handle potential BOM on every line
                 String[] data = line.split(";");
                 if (data.length == 4) {
-                    Intersection intersection = new Intersection(data[0], Double.parseDouble(data[1]), Double.parseDouble(data[2]), data[3]);
+                    Intersection intersection = new Intersection(
+                        Integer.parseInt(data[0]),
+                        Double.parseDouble(data[1]),
+                        Double.parseDouble(data[2]),
+                        data[3]
+                    );
                     intersections.add(intersection);  // Adding to the list as well
                 }
             }
@@ -49,7 +57,14 @@ public class ReadData {
             e.printStackTrace();
         }
         System.out.println("Loaded Intersections: " + intersections.size());  // Optional: Print the number of loaded intersections
-        return intersections;  // Continuing to return the map for use with roads
+        return intersections;  // Returning the list for use
+    }
+
+    private static String removeUtf8Bom(String s) {
+        if (s.startsWith("\uFEFF")) {
+            return s.substring(1);
+        }
+        return s;
     }
 
     public static List<ServiceLocation> readServiceLocationsFromFile(String filename) {

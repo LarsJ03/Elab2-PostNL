@@ -17,7 +17,6 @@ public class ServiceLocation {
         this.totalPickups = totalPickups;
     }
 
-    // Getters
     public double getX() { return x; }
     public double getY() { return y; }
     public String getSquare() { return square; }
