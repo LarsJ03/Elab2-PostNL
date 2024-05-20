@@ -37,7 +37,10 @@ public class RoadNetwork {
 
     private void floydWarshall(int maxNodeId) {
         for (int k = 0; k <= maxNodeId; k++) {
-            System.out.println("Processing node " + (k + 1) + " of " + (maxNodeId + 1));
+            if (k % 100 == 0) {
+                System.out.println("Processing node " + (k + 1) + " of " + (maxNodeId + 1));
+            }
+            
             for (int i = 0; i <= maxNodeId; i++) {
                 for (int j = 0; j <= maxNodeId; j++) {
                     if (dist[i][k] < INF && dist[k][j] < INF && dist[i][j] > dist[i][k] + dist[k][j]) {

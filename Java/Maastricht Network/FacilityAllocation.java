@@ -14,7 +14,6 @@ public class FacilityAllocation {
         this.intersections = intersections;
         allocateNodes();
         assignFacilitiesToIntersections();
-        printAllocations();
     }
 
     private void loadDistances(String filePath) {
@@ -29,8 +28,6 @@ public class FacilityAllocation {
                     distances[i][j] = value.equals("INF") ? Double.MAX_VALUE : Double.parseDouble(value);
                 }
                 i++;
-
-                System.out.println("Loaded " + i + " rows of distances");
             }
         } catch (IOException e) {
             System.err.println("Error reading the distance file: " + e.getMessage());
@@ -91,8 +88,6 @@ public class FacilityAllocation {
         }
     }
 
-    public void printAllocations() {
-        intersections.forEach(intersection -> System.out.println(intersection));
-    }
+    
 }
 
