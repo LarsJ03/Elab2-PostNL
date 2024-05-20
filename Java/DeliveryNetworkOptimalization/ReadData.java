@@ -3,7 +3,7 @@ import java.util.*;
 
 public class ReadData {
     public static List<Road> readRoadsFromFile(String filename) {
-        List<Road> roads = new ArrayList<>();
+        ArrayList<Road> roads = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;
             boolean firstLine = true; // to skip header
@@ -28,7 +28,8 @@ public class ReadData {
                     double orderOdds = Double.parseDouble(data[13].replace(",", "."));  
 
 
-                    Road road = new Road(V1, V2, dist, x1, y1, x2, y2, type, maxSpeed, population, orderOdds);
+                    Road2 road = new Road2(V1, V2, dist, x1, y1, x2, y2, type, maxSpeed, population, orderOdds);
+                    
                     roads.add(road);
                 }
             }
