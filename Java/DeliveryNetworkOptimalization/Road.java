@@ -13,7 +13,7 @@ public class Road {
     private double orderOdds;
 
     // Updated constructor to include type and maxSpeed
-    public Road( int V1, int V2, double dist, double x1, double y1, double x2, double y2, String type, int maxSpeed, int population, double orderOdds) {
+    public Road(int V1, int V2, double dist, double x1, double y1, double x2, double y2, String type, int maxSpeed, int population, double orderOdds) {
         this.V1 = V1;
         this.V2 = V2;
         this.dist = dist;

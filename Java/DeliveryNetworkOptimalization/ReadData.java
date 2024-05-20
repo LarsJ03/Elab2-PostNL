@@ -24,8 +24,11 @@ public class ReadData {
                     double y2 = Double.parseDouble(data[11].replace(",", "."));
                     String type = data[5];
                     int maxSpeed = Integer.parseInt(data[7]);
+                    int population = Integer.parseInt(data[12]);
+                    double orderOdds = Double.parseDouble(data[13].replace(",", "."));  
 
-                    Road road = new Road(V1, V2, dist, x1, y1, x2, y2, type, maxSpeed);
+
+                    Road road = new Road(V1, V2, dist, x1, y1, x2, y2, type, maxSpeed, population, orderOdds);
                     roads.add(road);
                 }
             }
