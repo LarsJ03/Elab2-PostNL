@@ -9,9 +9,12 @@ public class Road {
     private String type;  // Type of the road
     private int maxSpeed; // Maximum speed allowed on the road
     private double timeToDrive;  // Time to drive the road at max speed
+    private String Square1;
+    private String Square2;
+    private String SquareMid;
 
     // Updated constructor to include type and maxSpeed
-    public Road( int V1, int V2, double dist, double x1, double y1, double x2, double y2, String type, int maxSpeed) {
+    public Road( int V1, int V2, double dist, double x1, double y1, double x2, double y2, String type, int maxSpeed, String Square1, String Square2, String SquareMid) {
         this.V1 = V1;
         this.V2 = V2;
         this.dist = dist;
@@ -22,6 +25,9 @@ public class Road {
         this.type = type;
         this.maxSpeed = maxSpeed;
         this.timeToDrive = timeToDrive();
+        this.Square1 = Square1;
+        this.Square2 = Square2;
+        this.SquareMid = SquareMid;
         
     }
 
@@ -34,6 +40,9 @@ public class Road {
     public double getY2() { return y2; }
     public String getType() { return type; }
     public int getMaxSpeed() { return maxSpeed; }
+    public String getSquare1() {return Square1;}
+    public String getSquare2() {return Square2;}
+    public String getSquareMid() {return SquareMid;}
 
     public double getDist() {
         return dist;

@@ -22,10 +22,14 @@ public class ReadData {
                     double y1 = Double.parseDouble(data[9].replace(",", "."));
                     double x2 = Double.parseDouble(data[10].replace(",", "."));
                     double y2 = Double.parseDouble(data[11].replace(",", "."));
+                    String Square1 = data[12];
+                    String Square2 = data[13];
+                    String SquareMid = data[14];
+                    
                     String type = data[5];
                     int maxSpeed = Integer.parseInt(data[7]);
 
-                    Road road = new Road(V1, V2, dist, x1, y1, x2, y2, type, maxSpeed);
+                    Road road = new Road(V1, V2, dist, x1, y1, x2, y2, type, maxSpeed, Square1, Square2, SquareMid);
                     roads.add(road);
                 }
             }
@@ -94,4 +98,67 @@ public class ReadData {
         return locations;
     }
     
+    public static List<Square> readSquaresFromFile(String filename) {
+        List<Square> squares = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line;
+            boolean firstLine = true; // to skip header
+
+            while ((line = reader.readLine()) != null) {
+                if (firstLine) {
+                    firstLine = false; // Skip the header row
+                    continue;
+                }
+                String[] data = line.split(";");
+                if (data.length == 27) {
+                	String coordinate = data[0];
+                    int population = Integer.parseInt(data[1]);
+                    int male = Integer.parseInt(data[2]);
+                    int female = Integer.parseInt(data[3]);
+                    int children = Integer.parseInt(data[4]);
+                    int youngAdults = Integer.parseInt(data[5]);
+                    int adults = Integer.parseInt(data[6]);
+                    int old = Integer.parseInt(data[7]);
+                    int veryOld = Integer.parseInt(data[8]);
+                    int households = Integer.parseInt(data[9]);
+                    int singleHouseholds = Integer.parseInt(data[10]);
+                    int multiHouseholds = Integer.parseInt(data[11]);
+                    int singleParentHouseholds = Integer.parseInt(data[12]);
+                    int twoParentHouseholds = Integer.parseInt(data[13]);
+                    int houses = Integer.parseInt(data[14]);
+                    int homeOwnershipPercentage = Integer.parseInt(data[15]);
+                    int rentalPercentage = Integer.parseInt(data[16]);
+                    int socialHousingPercentage = Integer.parseInt(data[17]);
+                    int vacantHouses = Integer.parseInt(data[18]);
+                    int avgHomeValue = Integer.parseInt(data[19]);
+                    int urbanizationIndex = Integer.parseInt(data[20]);
+                    int medianHouseholdIncomeLowBound = Integer.parseInt(data[21]);
+                    int medianHouseholdIncomeUpperBound = Integer.parseInt(data[22]);
+                    
+                    String[] parts = data[23].split("-");
+                    int lowIncomePercentage = Integer.parseInt(parts[0].trim());
+                    String[] secondParts = parts[1].split(" ");
+                    int highIncomePercentage = Integer.parseInt(secondParts[0].trim());
+                    
+                    int distToSupermarket = Integer.parseInt(data[24]);
+                    int x = Integer.parseInt(data[25]);
+                    int y = Integer.parseInt(data[26]);
+
+                    Square square = new Square(
+                        coordinate, population, male, female, children, youngAdults, adults, old, veryOld, households, 
+                        singleHouseholds, multiHouseholds, singleParentHouseholds, twoParentHouseholds, houses, homeOwnershipPercentage, 
+                        rentalPercentage, socialHousingPercentage, vacantHouses, avgHomeValue, urbanizationIndex, 
+                        medianHouseholdIncomeLowBound, medianHouseholdIncomeUpperBound, lowIncomePercentage, highIncomePercentage, 
+                        distToSupermarket, x, y
+                    );
+
+                    squares.add(square);
+                
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return squares;
+    }
 }
