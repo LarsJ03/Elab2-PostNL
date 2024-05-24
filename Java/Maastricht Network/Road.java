@@ -12,6 +12,8 @@ public class Road {
     private String Square1;
     private String Square2;
     private String SquareMid;
+    private double Population;
+    
 
     // Updated constructor to include type and maxSpeed
     public Road( int V1, int V2, double dist, double x1, double y1, double x2, double y2, String type, int maxSpeed, String Square1, String Square2, String SquareMid) {
@@ -47,8 +49,64 @@ public class Road {
     public double getDist() {
         return dist;
     }
+    
+    public void calcDist() {
+    	this.dist = Math.sqrt(Math.pow((this.x2-this.x1), 2) + Math.pow((this.y2-this.y1), 2))/10;
+    }
 
     public double timeToDrive() {
         return dist / (maxSpeed/3.6);
     }
+    
+    public void setPopulation(double PopPerDist) {
+    	this.Population = PopPerDist * dist;
+    }
+    
+    
+    public void setX1(double x1) {
+    	this.x1 = x1;
+    }
+    
+    public void setX2(double x2) {
+    	this.x2 = x2;
+    }
+    
+    public void setY1(double y1) {
+    	this.y1 = y1;
+    }
+    
+    public void setY2(double y2) {
+    	this.y2 = y2;
+    }
+    
+    public void setSquare(String squarename) {
+    	this.Square1= squarename;
+    }
+    
+    public double getGradient() {
+    	return (y2-y1)/(x2-x1);  
+    }
+    
+    public double getC() {
+    	return -1*getGradient()* x1 + y1;
+    }
+    
+    public Road cloneRoad() {
+    	Road clone = new Road(this.V1,
+        this.V2,
+        this.dist,
+        this.x1,
+        this.y1,
+        this.x2,
+        this.y2,
+        this.type,
+        this.maxSpeed,
+        this.Square1,
+        this.Square2,
+        this.SquareMid);
+    	
+    	return clone;
+    }
+    
+    
 }

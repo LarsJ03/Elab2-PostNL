@@ -26,8 +26,9 @@ public class Square {
     private int LowIncomePercentage;
     private int HighIncomePercentage;
     private int distToSupermarket;
-    private int X;
-    private int Y;
+    private double X;
+    private double Y;
+    private double TotalRoad;
 
 
     public Square(String coordinate, int population, int male, int female, int children, int youngAdults, int adults, int old, int veryOld, int households, int singleHouseholds, int multiHouseholds, int singleParentHouseholds, int twoParentHouseholds, int houses, int homeOwnershipPercentage, int rentalPercentage, int socialHousingPercentage, int vacantHouses, int avgHomeValue, int urbanizationIndex, int medianHouseholdIncomeLowBound, int medianHouseholdIncomeUpperBound, int lowIncomePercentage, int highIncomePercentage, int distToSupermarket, int x, int y) {
@@ -59,6 +60,7 @@ public class Square {
         this.distToSupermarket = distToSupermarket;
         this.X = x;
         this.Y = y;
+        this.TotalRoad = 0;
     }
 
     // Getter methods
@@ -113,9 +115,17 @@ public class Square {
     public int getHighIncomePercentage() {return HighIncomePercentage;}
 
     public int getDistToSupermarket() {return distToSupermarket; }
+    
+    public double getTotalRoad() {return TotalRoad; }
 
-    public int getX() {return X; }
+    public double getX() {return X; }
 
-    public int getY() {return Y; }
+    public double getY() {return Y; }
+    
+    public void addRoad(double km) {
+    	this.TotalRoad = this.TotalRoad +km;
+    }
+    
+
 }
 
