@@ -45,6 +45,7 @@ public class Road {
     public String getSquare1() {return Square1;}
     public String getSquare2() {return Square2;}
     public String getSquareMid() {return SquareMid;}
+    public double getPopulation() {return Population;}
 
     public double getDist() {
         return dist;
@@ -61,6 +62,7 @@ public class Road {
     public void setPopulation(double PopPerDist) {
     	this.Population = PopPerDist * dist;
     }
+    
     
     
     public void setX1(double x1) {

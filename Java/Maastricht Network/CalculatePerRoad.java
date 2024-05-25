@@ -1,6 +1,7 @@
 import java.util.List;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
-
 
 public class CalculatePerRoad {
 	public static List<Road >main(String[] args) {
@@ -175,4 +176,31 @@ public class CalculatePerRoad {
 		}
 		
 	}
+	
+	public static void writeRoadsToCSV(ArrayList<Road> roads, String filePath) {
+        try (FileWriter writer = new FileWriter(filePath)) {
+            // Write the CSV header
+            writer.append("V1,V2,dist,x1,y1,x2,y2,type,maxSpeed,timeToDrive,Square1,Square2,SquareMid,Population\n");
+
+            // Write each road's attributes as a CSV row
+            for (Road road : roads) {
+                writer.append(String.valueOf(road.getV1())).append(",")
+                      .append(String.valueOf(road.getV2())).append(",")
+                      .append(String.valueOf(road.getDist())).append(",")
+                      .append(String.valueOf(road.getX1())).append(",")
+                      .append(String.valueOf(road.getY1())).append(",")
+                      .append(String.valueOf(road.getX2())).append(",")
+                      .append(String.valueOf(road.getY2())).append(",")
+                      .append(road.getType()).append(",")
+                      .append(String.valueOf(road.getMaxSpeed())).append(",")
+                      .append(String.valueOf(road.timeToDrive())).append(",")
+                      .append(road.getSquare1()).append(",")
+                      .append(road.getSquare2()).append(",")
+                      .append(road.getSquareMid()).append(",")
+                      .append(String.valueOf(road.getPopulation())).append("\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
