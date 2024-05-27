@@ -15,6 +15,30 @@ public class Road {
     private String SquareMid;
     private double Population;
     
+    private double Male;
+    private double Female;
+    private double Children;
+    private double YoungAdults;
+    private double Adults;
+    private double Old;  
+    private double VeryOld; 
+    private double Households; 
+    private double SingleHouseholds;
+    private double MultiHouseholds;
+    private double SingleParentHouseholds;
+    private double TwoParentHouseholds;
+    private double Houses;
+    private int HomeOwnershipPercentage;
+    private int RentalPercentage;
+    private int SocialHousingPercentage;
+    private double VacantHouses;
+    private int AvgHomeValue;
+    private int UrbanizationIndex;
+    private int MedianHouseholdIncomeLowBound;
+    private int MedianHouseholdIncomeUpperBound;
+    private int LowIncomePercentage;
+    private int HighIncomePercentage;
+    
 
     // Updated constructor to include type and maxSpeed
     public Road( int V1, int V2, double dist, double x1, double y1, double x2, double y2, String type, int maxSpeed, String Square1, String Square2, String SquareMid) {
@@ -32,6 +56,29 @@ public class Road {
         this.Square2 = Square2;
         this.SquareMid = SquareMid;
         
+        this.Male = -1;
+        this.Female = -1;
+        this.Children = -1;
+        this.YoungAdults = -1;
+        this.Adults = -1;
+        this.Old = -1;
+        this.VeryOld = -1;
+        this.Households = -1;
+        this.SingleHouseholds = -1;
+        this.MultiHouseholds = -1;
+        this.SingleParentHouseholds = -1;
+        this.TwoParentHouseholds = -1;
+        this.Houses = -1;
+        this.HomeOwnershipPercentage = -1;
+        this.RentalPercentage = -1;
+        this.SocialHousingPercentage = -1;
+        this.VacantHouses = -1;
+        this.AvgHomeValue = -1;
+        this.UrbanizationIndex = -1;
+        this.MedianHouseholdIncomeLowBound = -1;
+        this.MedianHouseholdIncomeUpperBound = -1;
+        this.LowIncomePercentage = -1;
+        this.HighIncomePercentage = -1;
     }
 
     // Getters
@@ -111,5 +158,142 @@ public class Road {
     	return clone;
     }
     
+    public double getMale() {return Male;}
+
+    public double getFemale() {return Female;  }
+
+    public double getChildren() {return Children;}
+
+    public double getYoungAdults() {return YoungAdults;}
+
+    public double getAdults() {return Adults;}
+
+    public double getOld() {return Old;}
+
+    public double getVeryOld() {return VeryOld;}
+
+    public double getHouseholds() {return Households;}
+
+    public double getSingleHouseholds() {return SingleHouseholds;}
+
+    public double getMultiHouseholds() {return MultiHouseholds;}
+
+    public double getSingleParentHouseholds() {return SingleParentHouseholds;}
+
+    public double getTwoParentHouseholds() {return TwoParentHouseholds;}
+
+    public double getHouses() {return Houses;}
+
+    public int getHomeOwnershipPercentage() {return HomeOwnershipPercentage;}
+
+    public int getRentalPercentage() {return RentalPercentage;}
+
+    public int getSocialHousingPercentage() {return SocialHousingPercentage;}
+
+    public double getVacantHouses() {return VacantHouses;}
+
+    public int getAvgHomeValue() {return AvgHomeValue;}
+
+    public int getUrbanizationIndex() {return UrbanizationIndex;}
+
+    public int getMedianHouseholdIncomeLowBound() {return MedianHouseholdIncomeLowBound;}
+
+    public int getMedianHouseholdIncomeUpperBound() {return MedianHouseholdIncomeUpperBound;}
+
+    public int getLowIncomePercentage() {return LowIncomePercentage;}
+
+    public int getHighIncomePercentage() {return HighIncomePercentage;}
+    
+    public void setMale(double male) {
+        Male = male;
+    }
+
+    public void setFemale(double female) {
+        Female = female;
+    }
+
+    public void setChildren(double children) {
+        Children = children;
+    }
+
+    public void setYoungAdults(double youngAdults) {
+        YoungAdults = youngAdults;
+    }
+
+    public void setAdults(double adults) {
+        Adults = adults;
+    }
+
+    public void setOld(double old) {
+        Old = old;
+    }
+
+    public void setVeryOld(double veryOld) {
+        VeryOld = veryOld;
+    }
+
+    public void setHouseholds(double households) {
+        Households = households;
+    }
+
+    public void setSingleHouseholds(double singleHouseholds) {
+        SingleHouseholds = singleHouseholds;
+    }
+
+    public void setMultiHouseholds(double multiHouseholds) {
+        MultiHouseholds = multiHouseholds;
+    }
+
+    public void setSingleParentHouseholds(double singleParentHouseholds) {
+        SingleParentHouseholds = singleParentHouseholds;
+    }
+
+    public void setTwoParentHouseholds(double twoParentHouseholds) {
+        TwoParentHouseholds = twoParentHouseholds;
+    }
+
+    public void setHouses(double houses) {
+        Houses = houses;
+    }
+
+    public void setHomeOwnershipPercentage(int homeOwnershipPercentage) {
+        HomeOwnershipPercentage = homeOwnershipPercentage;
+    }
+
+    public void setRentalPercentage(int rentalPercentage) {
+        RentalPercentage = rentalPercentage;
+    }
+
+    public void setSocialHousingPercentage(int socialHousingPercentage) {
+        SocialHousingPercentage = socialHousingPercentage;
+    }
+
+    public void setVacantHouses(double vacantHouses) {
+        VacantHouses = vacantHouses;
+    }
+
+    public void setAvgHomeValue(int avgHomeValue) {
+        AvgHomeValue = avgHomeValue;
+    }
+
+    public void setUrbanizationIndex(int urbanizationIndex) {
+        UrbanizationIndex = urbanizationIndex;
+    }
+
+    public void setMedianHouseholdIncomeLowBound(int medianHouseholdIncomeLowBound) {
+        MedianHouseholdIncomeLowBound = medianHouseholdIncomeLowBound;
+    }
+
+    public void setMedianHouseholdIncomeUpperBound(int medianHouseholdIncomeUpperBound) {
+        MedianHouseholdIncomeUpperBound = medianHouseholdIncomeUpperBound;
+    }
+
+    public void setLowIncomePercentage(int lowIncomePercentage) {
+        LowIncomePercentage = lowIncomePercentage;
+    }
+
+    public void setHighIncomePercentage(int highIncomePercentage) {
+        HighIncomePercentage = highIncomePercentage;
+    }
     
 }

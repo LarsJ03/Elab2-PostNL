@@ -108,10 +108,37 @@ public class CalculatePerRoad {
 		   roads.addAll(newroads);
 		   
 		   for(int i = 0; i < roads.size(); i++ ) {
-			   if(roads.get(i).getType().equals("residential") || roads.get(i).getType().equals("service") ||  roads.get(i).getType().equals("living_street")) {
+			   Road road = roads.get(i);
+			   if(road.getType().equals("residential") || road.getType().equals("service") ||  road.getType().equals("living_street")) {
 				   for(int j = 0; j < squares.size(); j++) {
-					   if(squares.get(j).getCoordinate().equals(roads.get(i).getSquare1())) {
-						   roads.get(i).setPopulation((squares.get(j).getPopulation()/squares.get(j).getTotalRoad()) * roads.get(i).getDist());
+					   if(squares.get(j).getCoordinate().equals(road.getSquare1())) {
+						   Square square = squares.get(j);
+						   
+						   road.setPopulation((square.getPopulation() / square.getTotalRoad()) * road.getDist());
+						   road.setMale((square.getMale() / square.getTotalRoad()) * road.getDist());
+						   road.setFemale((square.getFemale() / square.getTotalRoad()) * road.getDist());
+						   road.setChildren((square.getChildren() / square.getTotalRoad()) * road.getDist());
+						   road.setYoungAdults((square.getYoungAdults() / square.getTotalRoad()) * road.getDist());
+						   road.setAdults((square.getAdults() / square.getTotalRoad()) * road.getDist());
+						   road.setOld((square.getOld() / square.getTotalRoad()) * road.getDist());
+						   road.setVeryOld((square.getVeryOld() / square.getTotalRoad()) * road.getDist());
+						   road.setHouseholds((square.getHouseholds() / square.getTotalRoad()) * road.getDist());
+						   road.setSingleHouseholds((square.getSingleHouseholds() / square.getTotalRoad()) * road.getDist());
+						   road.setMultiHouseholds((square.getMultiHouseholds() / square.getTotalRoad()) * road.getDist());
+						   road.setSingleParentHouseholds((square.getSingleParentHouseholds() / square.getTotalRoad()) * road.getDist());
+						   road.setTwoParentHouseholds((square.getTwoParentHouseholds() / square.getTotalRoad()) * road.getDist());
+						   road.setHouses((square.getHouses() / square.getTotalRoad()) * road.getDist());
+						   road.setHomeOwnershipPercentage(square.getHomeOwnershipPercentage());
+						   road.setRentalPercentage(square.getRentalPercentage());
+						   road.setSocialHousingPercentage(square.getSocialHousingPercentage());
+						   road.setVacantHouses((square.getVacantHouses() / square.getTotalRoad()) * road.getDist());
+						   road.setAvgHomeValue(square.getAvgHomeValue());
+						   road.setUrbanizationIndex(square.getUrbanizationIndex());
+						   road.setMedianHouseholdIncomeLowBound(square.getMedianHouseholdIncomeLowBound());
+						   road.setMedianHouseholdIncomeUpperBound(square.getMedianHouseholdIncomeUpperBound());
+						   road.setLowIncomePercentage(square.getLowIncomePercentage());
+						   road.setHighIncomePercentage(square.getHighIncomePercentage());
+
 						   break;
 					   }
 				   } 
