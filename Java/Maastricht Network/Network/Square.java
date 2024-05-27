@@ -1,3 +1,4 @@
+package Network;
 
 public class Square {
 	private String Coordinate;
@@ -25,13 +26,13 @@ public class Square {
     private int MedianHouseholdIncomeUpperBound;
     private int LowIncomePercentage;
     private int HighIncomePercentage;
-    private int distToSupermarket;
+    private double distToSupermarket;
     private double X;
     private double Y;
     private double TotalRoad;
 
 
-    public Square(String coordinate, int population, int male, int female, int children, int youngAdults, int adults, int old, int veryOld, int households, int singleHouseholds, int multiHouseholds, int singleParentHouseholds, int twoParentHouseholds, int houses, int homeOwnershipPercentage, int rentalPercentage, int socialHousingPercentage, int vacantHouses, int avgHomeValue, int urbanizationIndex, int medianHouseholdIncomeLowBound, int medianHouseholdIncomeUpperBound, int lowIncomePercentage, int highIncomePercentage, int distToSupermarket, int x, int y) {
+    public Square(String coordinate, int population, int male, int female, int children, int youngAdults, int adults, int old, int veryOld, int households, int singleHouseholds, int multiHouseholds, int singleParentHouseholds, int twoParentHouseholds, int houses, int homeOwnershipPercentage, int rentalPercentage, int socialHousingPercentage, int vacantHouses, int avgHomeValue, int urbanizationIndex, int medianHouseholdIncomeLowBound, int medianHouseholdIncomeUpperBound, int lowIncomePercentage, int highIncomePercentage, double distToSupermarket, double x, double y) {
         this.Coordinate = coordinate;
         this.Population = population;
         this.Male = male;
@@ -114,7 +115,7 @@ public class Square {
 
     public int getHighIncomePercentage() {return HighIncomePercentage;}
 
-    public int getDistToSupermarket() {return distToSupermarket; }
+    public double getDistToSupermarket() {return distToSupermarket; }
     
     public double getTotalRoad() {return TotalRoad; }
 

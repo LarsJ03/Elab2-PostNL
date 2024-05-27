@@ -1,49 +1,57 @@
+package Network;
 import java.util.List;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class CalculatePerRoad {
-	public static List<Road >main(String[] args) {
+	public static List<Road> main(String[] args) {
 		List<Road> roads = ReadData.readRoadsFromFile("Data/Raw/edges.csv");
-		List<Square> squares = ReadData.readSquaresFromFile("Data/Raw/cbs squares.csv");
-		int changeX = 7200/2;
-		int changeY = 4620/2;
+		List<Square> squares = ReadData.readSquaresFromFile("Data/Raw/squares.csv");
 		
 		List<Road> newroads = new ArrayList<>();
 		
 		for(int i = 0; i < roads.size(); i++ ) {
 			Road road = roads.get(i);
-			if(road.getType() == "residential" || road.getType()== "service") {
+
+			if(road.getType().equals("residential") || road.getType().equals("service") || road.getType().equals("living_street")) {
 				
-				if( road.getSquare1() == road.getSquare2() && road.getSquare2() == road.getSquareMid()) {
+				if( road.getSquare1().equals(road.getSquare2()) && road.getSquare2().equals(road.getSquareMid())) {
 					for(int j = 0; j < squares.size(); j++) {
 						if(squares.get(j).getCoordinate() == road.getSquare1()) {
 							squares.get(j).addRoad(road.getDist());
 							break;
 						}
 					}  
+					
 				}
-				else if(road.getSquare1() == road.getSquareMid() || road.getSquareMid() == road.getSquare2()){
+				else if(road.getSquare1().equals(road.getSquareMid()) || road.getSquareMid().equals(road.getSquare2())){
 					Square square = null;
 					Square square2 = null;
 					
+
 					int temp = 0;
+					boolean found = false;
 					for(int j = 0; j < squares.size(); j++) {
-						if(squares.get(j).getCoordinate() == road.getSquare1()) {
+						if(squares.get(j).getCoordinate().equals(road.getSquare1())) {
 							square = squares.get(j);
 							temp++;
 							if(temp == 2) {
+								found = true;
 								break;
 							}
 						}
-						else if(squares.get(j).getCoordinate() == road.getSquare2()) {
+						else if(squares.get(j).getCoordinate().equals(road.getSquare2())) {
 							square2 = squares.get(j);
 							temp++;
 							if(temp == 2) {
+								found = true;
 								break;
 							}
 						}
+					}
+					if(found == false) {
+						continue;
 					}
 					
 					
@@ -55,28 +63,36 @@ public class CalculatePerRoad {
 					Square square3 = null;
 					
 					int temp = 0;
+					boolean found = false;
 					for(int j = 0; j < squares.size(); j++) {
-						if(squares.get(j).getCoordinate() == road.getSquare1()) {
+						if(squares.get(j).getCoordinate().equals( road.getSquare1())) {
 							square = squares.get(j);
 							temp++;
 							if(temp == 3) {
+								found = true;
 								break;
 							}
 						}
-						else if(squares.get(j).getCoordinate() == road.getSquareMid()) {
+						else if(squares.get(j).getCoordinate().equals(road.getSquareMid())) {
 							square2 = squares.get(j);
 							temp++;
 							if(temp == 3) {
+								found = true;
 								break;
 							}
 						}
-						else if(squares.get(j).getCoordinate() == road.getSquareMid()) {
+						else if(squares.get(j).getCoordinate().equals(road.getSquareMid())) {
 							square3 = squares.get(j);
 							temp++;
 							if(temp == 3) {
+								found = true;
 								break;
 							}
 						}
+					}
+					
+					if(found == false) {
+						continue;
 					}
 					
 					Road newroad1 = splitRoad(road, square, square2);
@@ -92,9 +108,9 @@ public class CalculatePerRoad {
 		   roads.addAll(newroads);
 		   
 		   for(int i = 0; i < roads.size(); i++ ) {
-			   if(roads.get(i).getType() == "residential" || roads.get(i).getType()== "service") {
+			   if(roads.get(i).getType().equals("residential") || roads.get(i).getType().equals("service") ||  roads.get(i).getType().equals("living_street")) {
 				   for(int j = 0; j < squares.size(); j++) {
-					   if(squares.get(j).getCoordinate() == roads.get(i).getSquare1()) {
+					   if(squares.get(j).getCoordinate().equals(roads.get(i).getSquare1())) {
 						   roads.get(i).setPopulation((squares.get(j).getPopulation()/squares.get(j).getTotalRoad()) * roads.get(i).getDist());
 						   break;
 					   }
@@ -177,7 +193,7 @@ public class CalculatePerRoad {
 		
 	}
 	
-	public static void writeRoadsToCSV(ArrayList<Road> roads, String filePath) {
+	public static void writeRoadsToCSV(List<Road> roads, String filePath) {
         try (FileWriter writer = new FileWriter(filePath)) {
             // Write the CSV header
             writer.append("V1,V2,dist,x1,y1,x2,y2,type,maxSpeed,timeToDrive,Square1,Square2,SquareMid,Population\n");

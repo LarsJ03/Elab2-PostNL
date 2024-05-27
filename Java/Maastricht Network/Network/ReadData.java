@@ -1,3 +1,4 @@
+package Network;
 import java.io.*;
 import java.util.*;
 
@@ -100,6 +101,7 @@ public class ReadData {
     
     public static List<Square> readSquaresFromFile(String filename) {
         List<Square> squares = new ArrayList<>();
+        
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;
             boolean firstLine = true; // to skip header
@@ -109,40 +111,51 @@ public class ReadData {
                     firstLine = false; // Skip the header row
                     continue;
                 }
-                String[] data = line.split(";");
-                if (data.length == 27) {
+                String[] data = line.split(",");
+                data = processData(data);
+                if (parseInteger(data[1]) != -1) {
                 	String coordinate = data[0];
-                    int population = Integer.parseInt(data[1]);
-                    int male = Integer.parseInt(data[2]);
-                    int female = Integer.parseInt(data[3]);
-                    int children = Integer.parseInt(data[4]);
-                    int youngAdults = Integer.parseInt(data[5]);
-                    int adults = Integer.parseInt(data[6]);
-                    int old = Integer.parseInt(data[7]);
-                    int veryOld = Integer.parseInt(data[8]);
-                    int households = Integer.parseInt(data[9]);
-                    int singleHouseholds = Integer.parseInt(data[10]);
-                    int multiHouseholds = Integer.parseInt(data[11]);
-                    int singleParentHouseholds = Integer.parseInt(data[12]);
-                    int twoParentHouseholds = Integer.parseInt(data[13]);
-                    int houses = Integer.parseInt(data[14]);
-                    int homeOwnershipPercentage = Integer.parseInt(data[15]);
-                    int rentalPercentage = Integer.parseInt(data[16]);
-                    int socialHousingPercentage = Integer.parseInt(data[17]);
-                    int vacantHouses = Integer.parseInt(data[18]);
-                    int avgHomeValue = Integer.parseInt(data[19]);
-                    int urbanizationIndex = Integer.parseInt(data[20]);
-                    int medianHouseholdIncomeLowBound = Integer.parseInt(data[21]);
-                    int medianHouseholdIncomeUpperBound = Integer.parseInt(data[22]);
+                    int population = parseInteger(data[1]);
+                    int male = parseInteger(data[2]);
+                    int female = parseInteger(data[3]);
+                    int children = parseInteger(data[4]);
+                    int youngAdults = parseInteger(data[5]);
+                    int adults = parseInteger(data[6]);
+                    int old = parseInteger(data[7]);
+                    int veryOld = parseInteger(data[8]);
+                    int households = parseInteger(data[9]);
+                    int singleHouseholds = parseInteger(data[10]);
+                    int multiHouseholds = parseInteger(data[11]);
+                    int singleParentHouseholds = parseInteger(data[12]);
+                    int twoParentHouseholds = parseInteger(data[13]);
+                    int houses = parseInteger(data[14]);
+                    int homeOwnershipPercentage = parseInteger(data[15]);
+                    int rentalPercentage = parseInteger(data[16]);
+                    int socialHousingPercentage = parseInteger(data[17]);
+                    int vacantHouses = parseInteger(data[18]);
+                    int avgHomeValue = parseInteger(data[19]);
+                    int urbanizationIndex = parseInteger(data[20]);
+                    int medianHouseholdIncomeLowBound = -1;
+                    int medianHouseholdIncomeUpperBound = -1;
                     
-                    String[] parts = data[23].split("-");
-                    int lowIncomePercentage = Integer.parseInt(parts[0].trim());
-                    String[] secondParts = parts[1].split(" ");
-                    int highIncomePercentage = Integer.parseInt(secondParts[0].trim());
+                    if (data[21] != null) {
+                    	String[] parts = data[21].split("-");
+                    	medianHouseholdIncomeLowBound = parseInteger(parts[0].trim());
+                    	String[] secondParts = parts[1].split(" ");
+                    	medianHouseholdIncomeUpperBound = parseInteger(secondParts[0].trim());
+                    }
                     
-                    int distToSupermarket = Integer.parseInt(data[24]);
-                    int x = Integer.parseInt(data[25]);
-                    int y = Integer.parseInt(data[26]);
+                    int lowIncomePercentage = parseInteger(data[22]);
+                	int highIncomePercentage = parseInteger(data[23]);
+                	
+
+
+                    int distToSupermarket = -1;
+                    if(data[21] != null) {
+                    	Double.parseDouble(data[24]);
+                    }
+                    double x = Double.parseDouble(data[25]);
+                    double y = Double.parseDouble(data[26]);
 
                     Square square = new Square(
                         coordinate, population, male, female, children, youngAdults, adults, old, veryOld, households, 
@@ -161,4 +174,29 @@ public class ReadData {
         }
         return squares;
     }
+    
+    public static String[] processData(String[] data) {
+        String[] result = new String[data.length];
+        for (int i = 0; i < data.length; i++) {
+            if (data[i].isEmpty()) {
+                result[i] = null;
+            } else {
+                result[i] = data[i];
+            }
+        }
+        return result;
+    }
+    
+    private static Integer parseInteger(String value) {
+        if (value == null || value.isEmpty()) {
+            return -1;
+        }
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            // Handle the case where the value is not a valid integer
+            return null;
+        }
+    }
+    
 }
