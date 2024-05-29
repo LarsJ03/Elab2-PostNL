@@ -107,6 +107,14 @@ public class Road {
         return dist / (maxSpeed/3.6);
     }
     
+    public void setV1( int v1) {
+    	this.V1 = v1;
+    }
+    
+    public void setV2( int v2) {
+    	this.V2 = v2;
+    }
+    
     public void setPopulation(double PopPerDist) {
     	this.Population = PopPerDist * dist;
     }
