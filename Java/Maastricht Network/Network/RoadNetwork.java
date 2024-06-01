@@ -1,3 +1,4 @@
+package Network;
 import java.io.*;
 import java.util.*;
 
@@ -32,7 +33,7 @@ public class RoadNetwork {
 
         floydWarshall(maxNodeId);
 
-        writeDistancesToFile("Data/OwnDataset/Distances.csv");
+        writeDistancesToFile("Data/Raw/Distances.csv");
     }
 
     private void floydWarshall(int maxNodeId) {
@@ -51,7 +52,7 @@ public class RoadNetwork {
         }
     }
 
-    private void writeDistancesToFile(String filePath) {
+    public void writeDistancesToFile(String filePath) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             for (int i = 0; i < dist.length; i++) {
                 for (int j = 0; j < dist[i].length; j++) {

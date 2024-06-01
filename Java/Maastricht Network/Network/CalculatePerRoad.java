@@ -341,7 +341,7 @@ public class CalculatePerRoad {
             		+ "Population, Male, Female, Children, YoungAdults, Adults, Old, VeryOld, Households, SingleHouseholds,"
             		+ " MultiHouseholds, SingleParentHouseholds, TwoParentHouseholds, Houses, HomeOwnershipPercentage, RentalPercentage, "
             		+ "SocialHousingPercentage, VacantHouses, AvgHomeValue, UrbanizationIndex, MedianHouseholdIncomeLowBound, MedianHouseholdIncomeUpperBound,"
-            		+ " LowIncomePercentage, HighIncomePercentage\n");
+            		+ " LowIncomePercentage, HighIncomePercentage, AssignedFacility, Packages\n");
 
             // Write each road's attributes as a CSV row
             for (Road road : roads) {
@@ -381,7 +381,9 @@ public class CalculatePerRoad {
                 .append(String.valueOf(road.getMedianHouseholdIncomeLowBound())).append(",")
                 .append(String.valueOf(road.getMedianHouseholdIncomeUpperBound())).append(",")
                 .append(String.valueOf(road.getLowIncomePercentage())).append(",")
-                .append(String.valueOf(road.getHighIncomePercentage())).append("\n");
+                .append(String.valueOf(road.getHighIncomePercentage())).append(",")
+                .append(String.valueOf(road.getAssignedFacility())).append(",")
+                .append(String.valueOf(road.getPackages())).append("\n")    ;
 
             }
         } catch (IOException e) {

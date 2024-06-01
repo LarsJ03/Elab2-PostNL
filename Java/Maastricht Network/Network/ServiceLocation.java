@@ -1,3 +1,4 @@
+package Network;
 public class ServiceLocation {
     private int locationId;
     private double x;
@@ -8,6 +9,7 @@ public class ServiceLocation {
     private int totalPickups;
     private int closestFacilityId;
     private int closestNodeId;
+    private double totalKM;
 
 
     // Full constructor
@@ -21,6 +23,7 @@ public class ServiceLocation {
         this.totalPickups = totalPickups;
         this.closestFacilityId = closestFacilityId;
         this.closestNodeId = closestNodeId;
+        this.totalKM = 0;
     }
 
     // Getters and setters
@@ -34,4 +37,6 @@ public class ServiceLocation {
     public int getClosestFacilityId() { return closestFacilityId; }
     public void setClosestFacilityId(int facilityId) { this.closestFacilityId = facilityId; }
     public int getClosestNodeId() { return closestNodeId; }
+    public double getTotalKM( ) { return totalKM; }
+    public void addtotalKM(double km) { this.totalKM = this.totalKM + km; }
 }

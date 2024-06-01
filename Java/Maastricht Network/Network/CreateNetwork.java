@@ -1,3 +1,4 @@
+package Network;
 import java.util.*;
 import javax.swing.*;
 import java.io.File;
@@ -25,7 +26,7 @@ public class CreateNetwork {
         frame.setVisible(true);
 
         // Initialize facility allocation and update intersections
-        FacilityAllocation facilityAllocation = new FacilityAllocation(intersections);
+        FacilityAllocation facilityAllocation = new FacilityAllocation(intersections, roads);
         
         JFrame frame2 = new JFrame("Road Map Visualization");
         // Correct the order of parameters according to the constructor's definition

@@ -76,12 +76,23 @@ public class ReadData {
         List<ServiceLocation> locations = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;
-    
+            
             while ((line = reader.readLine()) != null) {
+                // Remove BOM if present
+                if (line.startsWith("\uFEFF")) {
+                    line = line.substring(1);
+                }
+                
                 String[] data = line.split(";");
+                
                 if (data.length == 7) {
+                    // Trim each data element
+                    for (int i = 0; i < data.length; i++) {
+                        data[i] = data[i].trim();
+                    }
+
                     ServiceLocation location = new ServiceLocation(
-                        Integer.parseInt(data[0]), // Location ID, converted from String to int
+                        Integer.parseInt(data[0]), // Location ID
                         Double.parseDouble(data[1]), // X
                         Double.parseDouble(data[2]), // Y
                         data[3], // Square
@@ -89,7 +100,8 @@ public class ReadData {
                         Integer.parseInt(data[5]), // Total Deliveries
                         Integer.parseInt(data[6]), // Total Pickups
                         -1, // Closest Facility ID, hardcoded as -1 if not available
-                        Integer.parseInt(data[7])); // Closest Node ID, hardcoded as -1 if not available (adjust if data[7] is intended to be used)
+                        -1  // Closest Node ID, hardcoded as -1 if not available
+                    );
                     locations.add(location);
                 }
             }
@@ -98,6 +110,7 @@ public class ReadData {
         }
         return locations;
     }
+
     
     public static List<Square> readSquaresFromFile(String filename) {
         List<Square> squares = new ArrayList<>();

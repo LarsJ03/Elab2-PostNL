@@ -1,3 +1,4 @@
+package Network;
 import java.io.*;
 import java.util.*;
 
@@ -7,43 +8,66 @@ public class FacilityAllocation {
     private Map<Integer, Integer> nodeToFacility = new HashMap<>();
     private Set<Integer> facilityNodes = new HashSet<>();
     private List<Intersection> intersections = new ArrayList<>();
+    private List<Road> roads = new ArrayList<>();
 
-    public FacilityAllocation(List<Intersection> intersections) {
-        loadDistances("Data/OwnDataset/Distances.csv");
-        loadFacilityLocations("Data/OwnDataset/ServicePointLocationsUpdated.csv");
+    public FacilityAllocation(List<Intersection> intersections, List<Road> roads) {
+        loadDistances("Data/Raw/Distances.csv");
+        loadFacilityLocations("Data/Raw/Service Point Locations.csv");
         this.intersections = intersections;
+        this.roads = roads;
         allocateNodes();
         assignFacilitiesToIntersections();
     }
 
     private void loadDistances(String filePath) {
+        List<double[]> tempDistances = new ArrayList<>();
+
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
-            int i = 0;
-            distances = new double[8486][8486]; // Assuming this size is correct
-            while ((line = reader.readLine()) != null && i < distances.length) {
+
+            while ((line = reader.readLine()) != null) {
                 String[] values = line.split(";");
-                for (int j = 0; j < distances[i].length && j < values.length; j++) {
-                    String value = values[j].replace(",", "."); // Replace commas with dots
-                    distances[i][j] = value.equals("INF") ? Double.MAX_VALUE : Double.parseDouble(value);
+                double[] distanceRow = new double[values.length];
+                
+                for (int j = 0; j < values.length; j++) {
+                    String value = values[j].replace(",", ".");
+                    distanceRow[j] = value.equals("INF") ? Double.MAX_VALUE : Double.parseDouble(value);
                 }
-                i++;
+                
+                tempDistances.add(distanceRow);
             }
+
+            // Convert List to 2D array
+            int numRows = tempDistances.size();
+            int numCols = tempDistances.isEmpty() ? 0 : tempDistances.get(0).length;
+            distances = new double[numRows][numCols];
+            
+            for (int i = 0; i < numRows; i++) {
+                distances[i] = tempDistances.get(i);
+            }
+
         } catch (IOException e) {
             System.err.println("Error reading the distance file: " + e.getMessage());
         }
     }
+
 
     private void loadFacilityLocations(String filePath) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] data = line.split(";");
-                int facilityNodeId = Integer.parseInt(data[7]); // Assuming the facility node ID is in the 8th column
+                String facilityNodeIdStr = data[0].trim(); // Trim the input string
+                if (facilityNodeIdStr.startsWith("\uFEFF")) {
+                    facilityNodeIdStr = facilityNodeIdStr.substring(1); // Remove BOM if present
+                }
+                int facilityNodeId = Integer.parseInt(facilityNodeIdStr);
                 facilityNodes.add(facilityNodeId);
             }
         } catch (IOException e) {
             System.err.println("Error reading the facility locations file: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.err.println("Error parsing facility node ID: " + e.getMessage());
         }
     }
 
@@ -79,12 +103,47 @@ public class FacilityAllocation {
         }
     }
 
-    private void assignFacilitiesToIntersections() {
+    public void assignFacilitiesToIntersections() {
         for (Intersection intersection : intersections) {
             int nodeId = intersection.getNodeId();
             if (nodeToFacility.containsKey(nodeId)) {
                 intersection.setAssignedFacility(nodeToFacility.get(nodeId));
             }
+        }
+        
+        for(Road road : roads) {
+            int facility1 = 0;
+            int facility2 = 0;
+            int counter = 0;
+        	for (Intersection intersection : intersections) {
+        		if(road.getV1() == intersection.getAssignedFacility()) {
+        			facility1 = intersection.getAssignedFacility();
+        			counter++;
+        			if(counter == 2) {
+        				break;
+        			}
+        		}
+        		else if(road.getV2() == intersection.getAssignedFacility()) {
+        			facility2 = intersection.getAssignedFacility();
+        			counter++;
+        			if(counter == 2) {
+        				break;
+        			}
+        		}
+        	}
+        	
+        	if(facility1 == facility2) {
+        		road.setAssignedFacility(facility1);
+        	}
+        	else {
+        		double rand = Math.random();
+        		if(rand > 0.5) {
+        			road.setAssignedFacility(facility1);
+        		}
+        		else {
+        			road.setAssignedFacility(facility2);
+        		}
+        	}
         }
     }
 

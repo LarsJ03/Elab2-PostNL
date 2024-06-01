@@ -39,7 +39,9 @@ public class Road {
     private int LowIncomePercentage;
     private int HighIncomePercentage;
     
-
+    private int AssignedFacility;
+    private int Packages;
+    
     // Updated constructor to include type and maxSpeed
     public Road( int V1, int V2, double dist, double x1, double y1, double x2, double y2, String type, int maxSpeed, String Square1, String Square2, String SquareMid) {
         this.V1 = V1;
@@ -79,6 +81,9 @@ public class Road {
         this.MedianHouseholdIncomeUpperBound = -1;
         this.LowIncomePercentage = -1;
         this.HighIncomePercentage = -1;
+        
+        this.AssignedFacility = -1;
+        this.Packages = 0;
     }
 
     // Getters
@@ -212,6 +217,10 @@ public class Road {
 
     public int getHighIncomePercentage() {return HighIncomePercentage;}
     
+    public int getAssignedFacility() {return AssignedFacility;}
+    
+    public int getPackages() {return Packages;}
+    
     public void setMale(double male) {
         Male = male;
     }
@@ -302,6 +311,14 @@ public class Road {
 
     public void setHighIncomePercentage(int highIncomePercentage) {
         HighIncomePercentage = highIncomePercentage;
+    }
+    
+    public void setAssignedFacility(int assignedfacility) {
+    	AssignedFacility = assignedfacility;
+    }
+    
+    public void setPackages(int packages) {
+    	Packages = packages;
     }
     
 }
