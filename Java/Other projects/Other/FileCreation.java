@@ -12,7 +12,6 @@ public class FileCreation {
 		
 
 		FacilityAllocation facilityallocation = new FacilityAllocation(intersections, roads);
-		facilityallocation.assignFacilitiesToIntersections();
 		
         Network.LinearData.assignPackages(servicelocations, roads);
 		

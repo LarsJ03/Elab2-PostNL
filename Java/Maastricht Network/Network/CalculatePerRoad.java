@@ -394,14 +394,15 @@ public class CalculatePerRoad {
 	public static void writeIntersectionsToCSV(List<Intersection> intersections, String filePath) {
         try (FileWriter writer = new FileWriter(filePath)) {
             // Write the CSV header
-            writer.append("NodeId, X, Y, Square\n");
+            writer.append("NodeId, X, Y, Square, AssignedFacility\n");
 
             // Write each road's attributes as a CSV row
             for (Intersection intersection : intersections) {
             	writer.append(String.valueOf(intersection.getNodeId())).append(",")
             	.append(String.valueOf(intersection.getX())).append(",")
             	.append(String.valueOf(intersection.getY())).append(",")
-                .append(intersection.getSquare()).append("\n");
+                .append(intersection.getSquare()).append(",")
+                .append(String.valueOf(intersection.getAssignedFacility())).append("\n");
 
             }
         } catch (IOException e) {

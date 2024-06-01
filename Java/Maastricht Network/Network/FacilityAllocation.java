@@ -103,27 +103,27 @@ public class FacilityAllocation {
         }
     }
 
-    public void assignFacilitiesToIntersections() {
+    private void assignFacilitiesToIntersections() {
         for (Intersection intersection : intersections) {
             int nodeId = intersection.getNodeId();
             if (nodeToFacility.containsKey(nodeId)) {
                 intersection.setAssignedFacility(nodeToFacility.get(nodeId));
             }
         }
-        
+
         for(Road road : roads) {
-            int facility1 = 0;
-            int facility2 = 0;
+            int facility1 = -1;
+            int facility2 = -1;
             int counter = 0;
         	for (Intersection intersection : intersections) {
-        		if(road.getV1() == intersection.getAssignedFacility()) {
+        		if(road.getV1() == intersection.getNodeId()) {
         			facility1 = intersection.getAssignedFacility();
         			counter++;
         			if(counter == 2) {
         				break;
         			}
         		}
-        		else if(road.getV2() == intersection.getAssignedFacility()) {
+        		if(road.getV2() == intersection.getNodeId()) {
         			facility2 = intersection.getAssignedFacility();
         			counter++;
         			if(counter == 2) {
