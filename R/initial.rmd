@@ -1,0 +1,141 @@
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Initial data reading
+```{r}
+library(tidyverse)
+library(car)
+library(glmnet)
+library(caret)
+
+
+roads = read.csv("newedges.csv")
+facilities = read.csv("facilities.csv")
+
+roads<- filter(roads, Packages > 0)
+roads <- roads[-c(1:13)]
+roads <- roads[apply(roads, 1, function(row) all(is.finite(row))), ]
+
+
+```
+
+
+#corelation matrix, not currently used
+```{r}
+cor_matrix <- cor(roads[9:24], use = "complete.obs")
+
+```
+
+# regression with all variables
+```{r}
+column_names <- names(roads[-c(25:26)])
+column_names_string <- paste(column_names, collapse = " + ")
+print (column_names_string)
+
+reg <- lm(Packages ~ Population + Female + Children + YoungAdults + Adults  + MultiHouseholds + SingleParentHouseholds + TwoParentHouseholds + Houses + HomeOwnershipPercentage + RentalPercentage + SocialHousingPercentage + AvgHomeValue + UrbanizationIndex + MedianHouseholdIncomeLowBound + MedianHouseholdIncomeUpperBound + LowIncomePercentage + HighIncomePercentage, data = roads)
+
+vif_values <- vif(reg)
+print(vif_values)
+
+summary(reg)
+
+```
+
+
+# regression with only significant variables and low vif, so probably no multicollinearity
+```{r}
+reg <- lm(Packages ~ Population + Children  + SingleHouseholds + MultiHouseholds +  HighIncomePercentage, data = roads)
+vif_values <- vif(reg)
+print(vif_values)
+summary(reg)
+```
+
+#Lasso regression, we are still using -1 for missing values
+```{r}
+R2.adj <- function(x,y){
+ 1-(((1-R2(x, roads$Packages))*(length(x)-1))/(length(x)-y-1))
+}
+
+
+# Prepare the data
+x <- as.matrix(roads[1:24])  # Exclude the dependent variable
+y <- roads$Packages
+
+
+# Cross-validation to find the best lambda
+cv_lasso <- cv.glmnet(x, y, alpha = 1)
+best_lambda <- cv_lasso$lambda.min
+
+# Fit the final Lasso Regression model
+lasso_final <- glmnet(x, y, alpha = 1, lambda = best_lambda)
+
+# Extract the coefficients
+lasso_coefficients <- coef(lasso_final)
+
+# Print the coefficients
+print(lasso_coefficients)
+
+predictions.lasso <- predict(lasso_final, s = best_lambda, newx = x)
+
+RMSE.lasso <- RMSE(predictions.lasso, roads$Packages)
+R2.adj.lasso <- R2.adj(predictions.lasso, 3)
+
+print(RMSE.lasso)
+print(R2.adj.lasso)
+```
+
+
+#Final Lasso regression using mice to fill in missing data
+
+```{r}
+
+library(mice)
+
+# Create a sample data frame for demonstration
+set.seed(123)
+
+# Replace all -1 values in the data frame with NA
+roads2 <- roads %>%
+  mutate(across(everything(), ~ ifelse(. == -1, NA, .)))
+
+# Apply multiple imputation using the mice function
+# 'm' specifies the number of multiple imputations to create
+imputed_data <- mice(roads2, m = 5, method = 'pmm', seed = 500)
+
+
+# Extract one of the imputed data sets (e.g., the first one)
+completed_roads <- complete(imputed_data, 1)
+
+# Fit a regression model using the imputed data
+# Prepare the data
+x <- as.matrix(completed_roads[c(1:24)])  # Exclude the dependent variable
+y <- completed_roads$Packages
+
+# Fit the Ridge Regression model
+ridge_model <- glmnet(x, y, alpha = 1)  # alpha = 0 for Ridge
+
+# Cross-validation to find the best lambda
+cv_ridge <- cv.glmnet(x, y, alpha = 1)
+best_lambda <- cv_ridge$lambda.min
+
+# Fit the final Ridge Regression model
+lasso_final <- glmnet(x, y, alpha = 1, lambda = best_lambda)
+
+# Extract the coefficients
+lasso_coefficients <- coef(lasso_final)
+
+# Print the coefficients
+print(lasso_coefficients)
+
+predictions.lasso <- predict(lasso_final, s = best_lambda, newx = x)
+
+RMSE.lasso <- RMSE(predictions.lasso, roads$Packages)
+R2.adj.lasso <- R2.adj(predictions.lasso, 3)
+
+print(RMSE.lasso)
+print(R2.adj.lasso)
+
+
+```
+
